@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="inner">
+	<div class="header">
+		<div class="header-title">
+			<span class="header-text">SYSTEM STATUS</span>
+			<span class="mode {% if g._mode.auto %}mode--auto{% endif %}">{{ g._mode.text }} Mode</span>
+		</div>
+		<form action="/change_mode" method="post">
+			<button name="forwardBtn" onclick="change_mode()">Change Mode</button>
+		</form>
+	</div>
+
+	<div class="content">
+		<div class="white-box">
+			<!-- last status -->
+			<div class="last-status">
+				{% set first_item = status_list | first %}
+				<span class="last-status-indicator 
+					{% if first_item.status == 0 %}graph-down
+					{% elif first_item.status == 1 %}graph-up
+					{% elif first_item.status == 2 %}graph-mid
+					{% endif %}"></span>
+				<div class="last-status-wrapper">
+					<span class="last-status-title">
+						{{ first_item.message }}
+					</span>
+					<span class="last-status-date">
+						{{ first_item.date }}
+					</span>
+				</div>
+				{% if not g._mode.auto %}
+					<button><a href="{{ url_for('manual_update') }}">Add new status</a></button>
+				{% endif %}
+			</div>
+			<!-- statistics -->
+			<div class="statistics">
+				{% for item in status_list%}
+				{% if item != first_item %}
+				<div class="content-statistics">
+					<span class="indicator-statistic 
+					{% if item.status == 0 %}graph-down
+					{% elif item.status == 1 %}graph-up
+					{% elif item.status == 2 %}graph-mid
+					{% endif %}"></span>
+					<div class="wrapper-statistic">
+						<span class="title-statistic">
+							{{ item.message }}
+						</span>
+						<span class="date-statistic">
+							{{ item.date }}
+						</span>
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+				<!-- legends -->
+				<div class="legend-statistics clearfix">
+					<span class="legend-item">
+				    	<span class="legend-color graph-up"></span>
+				        <label>Uptime</label>
+				     </span>
+				    <span class="legend-item">
+				    	<span class="legend-color graph-mid"></span>
+				        <label>Partial degradation</label>
+				    </span>
+					<span class="legend-item">
+				    	<span class="legend-color graph-down"></span>
+				        <label>Downtime</label>
+				     </span>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="inner">
+    <div class="header">
+        <span>ADD NEW STATUS</span>
+    </div>
+
+    <div class="content">
+        <div class="white-box form-box">
+
+
+        <form action="/status-page/manual-update" method="POST">
+        {{ form.csrf_token }}
+
+            <div class="form-block">
+                {{ form.status.label }}
+                {{ form.status }}
+            </div>
+            <div class="form-block">
+                {{ form.message.label }}
+                {{ form.message(size=140) }}
+            </div>
+            <button>{{ form.submit() }}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
