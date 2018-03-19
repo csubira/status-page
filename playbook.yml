@@ -1,0 +1,19 @@
+---
+- name: Ansible playbook for status page
+  hosts: all
+  tasks:
+  - name: ensure system packages are installed
+    apt: pkg={{item}} state=present
+    become: true
+    with_items:
+    - python-pip
+    - python-flask
+    - python-requests
+    - python-flaskext.wtf
+    - python-wtforms
+  - name: cronjob status report from service
+    cron:
+      name: cronjob status report from service
+      job: "python /vagrant/service/status_report.py"
+  - name: Status page flask app running
+    command: "python /vagrant/app.py"

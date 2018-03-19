@@ -26,7 +26,8 @@
 						{{ first_item.message }}
 					</span>
 					<span class="last-status-date">
-						{{ first_item.date }}
+						{{ first_item.date }} 
+						{% if not first_item.auto_mode %} (Edited by team) {% endif %}
 					</span>
 				</div>
 				{% if not g._mode.auto %}
@@ -49,6 +50,7 @@
 						</span>
 						<span class="date-statistic">
 							{{ item.date }}
+							{% if not item.auto_mode %} (Edited by team) {% endif %}
 						</span>
 					</div>
 				</div>
