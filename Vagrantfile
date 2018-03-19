@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   # config.vm.box = "base"
-  config.vm.box = 'hashicorp/precise64'
+  config.vm.box = 'ubuntu/trusty32'
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -70,22 +70,22 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 5000, host: 5000
 
   
-  config.vm.provision "shell", inline: <<-SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
     
-    # Apply the latest OS updates
-    # sudo apt-get update
-    # sudo apt-get upgrade
+  #   # Apply the latest OS updates
+  #   # sudo apt-get update
+  #   # sudo apt-get upgrade
 
-    # Install Python goodies
-    echo "Provisioning stystem status project"
-    apt-get install -y python-pip python-flask python-requests python-flaskext.wtf python-wtforms
-    (crontab -u vagrant -l ; echo "* * * * *  python /vagrant/service_status_report.py") | crontab -u vagrant -
-    python /vagrant/app.py
+  #   # Install Python goodies
+  #   echo "Provisioning stystem status project"
+  #   apt-get install -y python-pip python-flask python-requests python-flaskext.wtf python-wtforms
+  #   (crontab -u vagrant -l ; echo "* * * * *  python /vagrant/service/status_report.py") | crontab -u vagrant -
+  #   # python /vagrant/app.py
 
-  SHELL
+  # SHELL
   
-  # config.vm.provision "ansible_local" do |ansible|
-  #   ansible.playbook = "setup.yml"
-  # end
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
 
 end
